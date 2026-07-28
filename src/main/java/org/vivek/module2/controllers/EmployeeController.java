@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.*;
 import org.vivek.module2.DTO.EmployeeDTO;
 import org.vivek.module2.entity.EmployeeEntity;
 import org.vivek.module2.repository.EmployeeRepository;
+import org.vivek.module2.service.EmployeeService;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -18,11 +19,12 @@ public class EmployeeController {
 //    }
 
 
-    private final EmployeeRepository employeeRepository;
+    private final EmployeeService employeeService;
 
-    public EmployeeController(EmployeeRepository employeeRepository) {
-        this.employeeRepository = employeeRepository;
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
     }
+
 
 //    @GetMapping("/employees/{employeeId}")
 //    public EmployeeDTO getEmployeeById(@PathVariable(name = "employeeId") Long id){  //if we want to use another var for method we can use this way
@@ -30,21 +32,21 @@ public class EmployeeController {
 //    }
 
     @GetMapping("/{employeeId}")
-    public EmployeeEntity getEmployeeId(@PathVariable(name = "employeeId")Long id){
-        return employeeRepository.findById(id).orElse(null);
+    public EmployeeDTO getEmployeeId(@PathVariable(name = "employeeId")Long id){
+        return employeeService.getEmployeeById(id);
     }
 
     //if we want all the employees in sorted order
     @GetMapping
-    public List<EmployeeEntity> getAllEmployees(@RequestParam(required = false) Integer age, @RequestParam(required = false) String sortBy){
+    public List<EmployeeDTO> getAllEmployees(@RequestParam(required = false) Integer age, @RequestParam(required = false) String sortBy){
 //        return "Hi age " + age + " " + sortBy;
-        return employeeRepository.findAll();
+        return employeeService.getAllEmployees();
     }
 
     @PostMapping
-    public EmployeeEntity createNewEmployee(@RequestBody EmployeeEntity inputEmployee){
+    public EmployeeDTO createNewEmployee(@RequestBody EmployeeDTO inputEmployee){
 //        return "Hello from post";
-        return employeeRepository.save(inputEmployee);
+        return employeeService.createNewEmployee(inputEmployee);
     }
 
     @PutMapping
