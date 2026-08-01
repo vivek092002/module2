@@ -6,14 +6,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.vivek.module2.DTO.EmployeeDTO;
 import org.vivek.module2.entity.EmployeeEntity;
+import org.vivek.module2.exceptions.ResourceNotFoundExceptions;
 import org.vivek.module2.repository.EmployeeRepository;
 import org.vivek.module2.service.EmployeeService;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping(path = "/employees")
@@ -48,7 +46,8 @@ public class EmployeeController {
         Optional<EmployeeDTO> employeeDTO = employeeService.getEmployeeById(id);
         return employeeDTO
                 .map(employeeDTO1 -> ResponseEntity.ok(employeeDTO1))
-                .orElse(ResponseEntity.notFound().build());
+//                .orElse(ResponseEntity.notFound().build());
+                .orElseThrow(() -> new ResourceNotFoundExceptions("Employee not found"));
     }
 
     //if we want all the employees in sorted order
